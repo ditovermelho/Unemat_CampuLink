@@ -14,8 +14,9 @@ import 'schema/post_image_record.dart';
 import 'schema/post_users_list_like_record.dart';
 import 'schema/gruop_mebres_record.dart';
 import 'schema/group_post_record.dart';
-import 'schema/group_chat_record.dart';
-import 'schema/mensege_record.dart';
+import 'schema/chat_messages_record.dart';
+import 'schema/chats_record.dart';
+import 'schema/gruop_chat_messages_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,8 +33,9 @@ export 'schema/post_image_record.dart';
 export 'schema/post_users_list_like_record.dart';
 export 'schema/gruop_mebres_record.dart';
 export 'schema/group_post_record.dart';
-export 'schema/group_chat_record.dart';
-export 'schema/mensege_record.dart';
+export 'schema/chat_messages_record.dart';
+export 'schema/chats_record.dart';
+export 'schema/gruop_chat_messages_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -368,75 +370,112 @@ Future<List<GroupPostRecord>> queryGroupPostRecordOnce({
       singleRecord: singleRecord,
     );
 
-/// Functions to query GroupChatRecords (as a Stream and as a Future).
-Future<int> queryGroupChatRecordCount({
+/// Functions to query ChatMessagesRecords (as a Stream and as a Future).
+Future<int> queryChatMessagesRecordCount({
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      GroupChatRecord.collection,
+      ChatMessagesRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
-Stream<List<GroupChatRecord>> queryGroupChatRecord({
+Stream<List<ChatMessagesRecord>> queryChatMessagesRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      GroupChatRecord.collection,
-      GroupChatRecord.fromSnapshot,
+      ChatMessagesRecord.collection,
+      ChatMessagesRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<GroupChatRecord>> queryGroupChatRecordOnce({
+Future<List<ChatMessagesRecord>> queryChatMessagesRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      GroupChatRecord.collection,
-      GroupChatRecord.fromSnapshot,
+      ChatMessagesRecord.collection,
+      ChatMessagesRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-/// Functions to query MensegeRecords (as a Stream and as a Future).
-Future<int> queryMensegeRecordCount({
+/// Functions to query ChatsRecords (as a Stream and as a Future).
+Future<int> queryChatsRecordCount({
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      MensegeRecord.collection,
+      ChatsRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
-Stream<List<MensegeRecord>> queryMensegeRecord({
+Stream<List<ChatsRecord>> queryChatsRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      MensegeRecord.collection,
-      MensegeRecord.fromSnapshot,
+      ChatsRecord.collection,
+      ChatsRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<MensegeRecord>> queryMensegeRecordOnce({
+Future<List<ChatsRecord>> queryChatsRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      MensegeRecord.collection,
-      MensegeRecord.fromSnapshot,
+      ChatsRecord.collection,
+      ChatsRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+/// Functions to query GruopChatMessagesRecords (as a Stream and as a Future).
+Future<int> queryGruopChatMessagesRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      GruopChatMessagesRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<GruopChatMessagesRecord>> queryGruopChatMessagesRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      GruopChatMessagesRecord.collection,
+      GruopChatMessagesRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<GruopChatMessagesRecord>> queryGruopChatMessagesRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      GruopChatMessagesRecord.collection,
+      GruopChatMessagesRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,

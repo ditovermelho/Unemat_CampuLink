@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'login_model.dart';
@@ -33,12 +34,19 @@ class _LoginWidgetState extends State<LoginWidget>
       initialIndex: 0,
     )..addListener(() => setState(() {}));
     _model.textFieldEmailLgController ??= TextEditingController();
+    _model.textFieldEmailLgFocusNode ??= FocusNode();
     _model.textFieldSenhalLgController ??= TextEditingController();
+    _model.textFieldSenhalLgFocusNode ??= FocusNode();
     _model.textFielNomeCdController ??= TextEditingController();
+    _model.textFielNomeCdFocusNode ??= FocusNode();
     _model.textFielTelefoneCdController ??= TextEditingController();
+    _model.textFielTelefoneCdFocusNode ??= FocusNode();
     _model.textFieldEmailCdController ??= TextEditingController();
+    _model.textFieldEmailCdFocusNode ??= FocusNode();
     _model.textFieldSenhalCd1Controller ??= TextEditingController();
+    _model.textFieldSenhalCd1FocusNode ??= FocusNode();
     _model.textFieldSenhalCd2Controller ??= TextEditingController();
+    _model.textFieldSenhalCd2FocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -51,6 +59,17 @@ class _LoginWidgetState extends State<LoginWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -119,7 +138,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                     labelColor:
                                         FlutterFlowTheme.of(context).info,
                                     unselectedLabelColor:
-                                        FlutterFlowTheme.of(context).accent4,
+                                        FlutterFlowTheme.of(context)
+                                            .secondaryText,
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .titleMedium,
                                     unselectedLabelStyle: TextStyle(),
@@ -154,6 +174,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                             child: TextFormField(
                                               controller: _model
                                                   .textFieldEmailLgController,
+                                              focusNode: _model
+                                                  .textFieldEmailLgFocusNode,
                                               autofocus: true,
                                               obscureText: false,
                                               decoration: InputDecoration(
@@ -243,6 +265,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                             child: TextFormField(
                                               controller: _model
                                                   .textFieldSenhalLgController,
+                                              focusNode: _model
+                                                  .textFieldSenhalLgFocusNode,
                                               autofocus: true,
                                               obscureText: !_model
                                                   .textFieldSenhalLgVisibility,
@@ -460,6 +484,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                             child: TextFormField(
                                               controller: _model
                                                   .textFielNomeCdController,
+                                              focusNode: _model
+                                                  .textFielNomeCdFocusNode,
                                               autofocus: true,
                                               obscureText: false,
                                               decoration: InputDecoration(
@@ -548,6 +574,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                             child: TextFormField(
                                               controller: _model
                                                   .textFielTelefoneCdController,
+                                              focusNode: _model
+                                                  .textFielTelefoneCdFocusNode,
                                               autofocus: true,
                                               obscureText: false,
                                               decoration: InputDecoration(
@@ -637,6 +665,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                             child: TextFormField(
                                               controller: _model
                                                   .textFieldEmailCdController,
+                                              focusNode: _model
+                                                  .textFieldEmailCdFocusNode,
                                               autofocus: true,
                                               obscureText: false,
                                               decoration: InputDecoration(
@@ -726,6 +756,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                             child: TextFormField(
                                               controller: _model
                                                   .textFieldSenhalCd1Controller,
+                                              focusNode: _model
+                                                  .textFieldSenhalCd1FocusNode,
                                               autofocus: true,
                                               obscureText: !_model
                                                   .textFieldSenhalCd1Visibility,
@@ -836,6 +868,8 @@ class _LoginWidgetState extends State<LoginWidget>
                                             child: TextFormField(
                                               controller: _model
                                                   .textFieldSenhalCd2Controller,
+                                              focusNode: _model
+                                                  .textFieldSenhalCd2FocusNode,
                                               autofocus: true,
                                               obscureText: !_model
                                                   .textFieldSenhalCd2Visibility,

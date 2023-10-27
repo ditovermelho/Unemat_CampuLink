@@ -10,6 +10,7 @@ import 'update_profile_widget.dart' show UpdateProfileWidget;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -22,12 +23,15 @@ class UpdateProfileModel extends FlutterFlowModel<UpdateProfileWidget> {
   String uploadedFileUrl = '';
 
   // State field(s) for yourName widget.
+  FocusNode? yourNameFocusNode;
   TextEditingController? yourNameController;
   String? Function(BuildContext, String?)? yourNameControllerValidator;
   // State field(s) for myphone widget.
+  FocusNode? myphoneFocusNode;
   TextEditingController? myphoneController;
   String? Function(BuildContext, String?)? myphoneControllerValidator;
   // State field(s) for myBio widget.
+  FocusNode? myBioFocusNode;
   TextEditingController? myBioController;
   String? Function(BuildContext, String?)? myBioControllerValidator;
 
@@ -36,8 +40,13 @@ class UpdateProfileModel extends FlutterFlowModel<UpdateProfileWidget> {
   void initState(BuildContext context) {}
 
   void dispose() {
+    yourNameFocusNode?.dispose();
     yourNameController?.dispose();
+
+    myphoneFocusNode?.dispose();
     myphoneController?.dispose();
+
+    myBioFocusNode?.dispose();
     myBioController?.dispose();
   }
 

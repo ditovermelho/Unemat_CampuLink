@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'recuperar_senha_model.dart';
@@ -27,6 +28,7 @@ class _RecuperarSenhaWidgetState extends State<RecuperarSenhaWidget> {
     _model = createModel(context, () => RecuperarSenhaModel());
 
     _model.textFieldEmailRecupController ??= TextEditingController();
+    _model.textFieldEmailRecupFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -39,6 +41,17 @@ class _RecuperarSenhaWidgetState extends State<RecuperarSenhaWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -134,6 +147,7 @@ class _RecuperarSenhaWidgetState extends State<RecuperarSenhaWidget> {
                               child: TextFormField(
                                 controller:
                                     _model.textFieldEmailRecupController,
+                                focusNode: _model.textFieldEmailRecupFocusNode,
                                 autofocus: true,
                                 obscureText: false,
                                 decoration: InputDecoration(
@@ -194,8 +208,23 @@ class _RecuperarSenhaWidgetState extends State<RecuperarSenhaWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 10.0, 10.0, 10.0),
                               child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
+                                onPressed: () async {
+                                  if (_model.textFieldEmailRecupController.text
+                                      .isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Email required!',
+                                        ),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  await authManager.resetPassword(
+                                    email: _model
+                                        .textFieldEmailRecupController.text,
+                                    context: context,
+                                  );
                                 },
                                 text: 'Enviar e-mail de recuperação',
                                 options: FFButtonOptions(

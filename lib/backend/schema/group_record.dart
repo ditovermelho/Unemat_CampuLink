@@ -36,17 +36,17 @@ class GroupRecord extends FirestoreRecord {
   DateTime? get groupCreatedTime => _groupCreatedTime;
   bool hasGroupCreatedTime() => _groupCreatedTime != null;
 
-  // "group_mebres" field.
-  List<DocumentReference>? _groupMebres;
-  List<DocumentReference> get groupMebres => _groupMebres ?? const [];
-  bool hasGroupMebres() => _groupMebres != null;
+  // "group_descrision" field.
+  String? _groupDescrision;
+  String get groupDescrision => _groupDescrision ?? '';
+  bool hasGroupDescrision() => _groupDescrision != null;
 
   void _initializeFields() {
     _groupPhoto = snapshotData['group_photo'] as String?;
     _groupName = snapshotData['group_name'] as String?;
     _groupCreator = snapshotData['group_creator'] as DocumentReference?;
     _groupCreatedTime = snapshotData['group_created_time'] as DateTime?;
-    _groupMebres = getDataList(snapshotData['group_mebres']);
+    _groupDescrision = snapshotData['group_descrision'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -87,6 +87,7 @@ Map<String, dynamic> createGroupRecordData({
   String? groupName,
   DocumentReference? groupCreator,
   DateTime? groupCreatedTime,
+  String? groupDescrision,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -94,6 +95,7 @@ Map<String, dynamic> createGroupRecordData({
       'group_name': groupName,
       'group_creator': groupCreator,
       'group_created_time': groupCreatedTime,
+      'group_descrision': groupDescrision,
     }.withoutNulls,
   );
 
@@ -105,12 +107,11 @@ class GroupRecordDocumentEquality implements Equality<GroupRecord> {
 
   @override
   bool equals(GroupRecord? e1, GroupRecord? e2) {
-    const listEquality = ListEquality();
     return e1?.groupPhoto == e2?.groupPhoto &&
         e1?.groupName == e2?.groupName &&
         e1?.groupCreator == e2?.groupCreator &&
         e1?.groupCreatedTime == e2?.groupCreatedTime &&
-        listEquality.equals(e1?.groupMebres, e2?.groupMebres);
+        e1?.groupDescrision == e2?.groupDescrision;
   }
 
   @override
@@ -119,7 +120,7 @@ class GroupRecordDocumentEquality implements Equality<GroupRecord> {
         e?.groupName,
         e?.groupCreator,
         e?.groupCreatedTime,
-        e?.groupMebres
+        e?.groupDescrision
       ]);
 
   @override

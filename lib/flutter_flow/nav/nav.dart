@@ -6,7 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '/backend/backend.dart';
 
-import '../../auth/base_auth_user_provider.dart';
+import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
 import '/main.dart';
@@ -105,7 +105,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         ),
         FFRoute(
           name: 'newpost',
-          path: '/newpost',
+          path: '/new',
           builder: (context, params) => params.isEmpty
               ? NavBarPage(initialPage: 'newpost')
               : NewpostWidget(),
@@ -135,9 +135,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => UpdateProfileWidget(),
         ),
         FFRoute(
-          name: 'profile_another_use',
-          path: '/profileAnotherUse',
-          builder: (context, params) => ProfileAnotherUseWidget(
+          name: 'profile_another_use_follow',
+          path: '/profileAnotherUseFollow',
+          builder: (context, params) => ProfileAnotherUseFollowWidget(
             refUser: params.getParam(
                 'refUser', ParamType.DocumentReference, false, ['users']),
           ),
@@ -148,6 +148,79 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => GroupWidget(
             refGroup: params.getParam(
                 'refGroup', ParamType.DocumentReference, false, ['group']),
+            member: params.getParam(
+                'member', ParamType.DocumentReference, false, ['gruop_mebres']),
+          ),
+        ),
+        FFRoute(
+          name: 'profile_another_use_stop_follow',
+          path: '/profileAnotherUseStopFollow',
+          builder: (context, params) => ProfileAnotherUseStopFollowWidget(
+            refUser: params.getParam(
+                'refUser', ParamType.DocumentReference, false, ['users']),
+            connecref: params.getParam('connecref', ParamType.DocumentReference,
+                false, ['connections']),
+          ),
+        ),
+        FFRoute(
+          name: 'chat',
+          path: '/chat',
+          asyncParams: {
+            'chatUser': getDoc(['users'], UsersRecord.fromSnapshot),
+          },
+          builder: (context, params) => ChatWidget(
+            chatUser: params.getParam('chatUser', ParamType.Document),
+            chatRef: params.getParam(
+                'chatRef', ParamType.DocumentReference, false, ['chats']),
+          ),
+        ),
+        FFRoute(
+          name: 'chatlist',
+          path: '/chatlist',
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'chatlist')
+              : ChatlistWidget(),
+        ),
+        FFRoute(
+          name: 'group_view',
+          path: '/groupView',
+          builder: (context, params) => GroupViewWidget(
+            refgroup: params.getParam(
+                'refgroup', ParamType.DocumentReference, false, ['group']),
+          ),
+        ),
+        FFRoute(
+          name: 'list_friends',
+          path: '/listFriends',
+          builder: (context, params) => ListFriendsWidget(
+            userRef: params.getParam(
+                'userRef', ParamType.DocumentReference, false, ['users']),
+          ),
+        ),
+        FFRoute(
+          name: 'comment',
+          path: '/comment',
+          builder: (context, params) => CommentWidget(
+            postRef: params.getParam(
+                'postRef', ParamType.DocumentReference, false, ['post']),
+          ),
+        ),
+        FFRoute(
+          name: 'group_post',
+          path: '/groupPost',
+          builder: (context, params) => GroupPostWidget(
+            groupRef: params.getParam(
+                'groupRef', ParamType.DocumentReference, false, ['group']),
+            groupMebre: params.getParam('groupMebre',
+                ParamType.DocumentReference, false, ['gruop_mebres']),
+          ),
+        ),
+        FFRoute(
+          name: 'list_group',
+          path: '/listGroup',
+          builder: (context, params) => ListGroupWidget(
+            userRef: params.getParam(
+                'userRef', ParamType.DocumentReference, false, ['users']),
           ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),

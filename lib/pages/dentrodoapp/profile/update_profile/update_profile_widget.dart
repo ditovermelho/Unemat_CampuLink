@@ -9,6 +9,7 @@ import '/flutter_flow/upload_data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'update_profile_model.dart';
@@ -33,10 +34,13 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
     _model.yourNameController ??=
         TextEditingController(text: currentUserDisplayName);
+    _model.yourNameFocusNode ??= FocusNode();
     _model.myphoneController ??=
         TextEditingController(text: currentPhoneNumber);
+    _model.myphoneFocusNode ??= FocusNode();
     _model.myBioController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.bio, ''));
+    _model.myBioFocusNode ??= FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -49,9 +53,20 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primary,
         automaticallyImplyLeading: false,
@@ -109,7 +124,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -191,6 +206,19 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                                   return;
                                 }
                               }
+
+                              if (_model.uploadedFileUrl != null &&
+                                  _model.uploadedFileUrl != '') {
+                                setState(() {
+                                  FFAppState().image = _model.uploadedFileUrl;
+                                });
+                                return;
+                              } else {
+                                setState(() {
+                                  FFAppState().image = currentUserPhoto;
+                                });
+                                return;
+                              }
                             },
                             child: Container(
                               width: 90.0,
@@ -218,6 +246,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                 child: AuthUserStreamWidget(
                   builder: (context) => TextFormField(
                     controller: _model.yourNameController,
+                    focusNode: _model.yourNameFocusNode,
                     textCapitalization: TextCapitalization.words,
                     obscureText: false,
                     decoration: InputDecoration(
@@ -265,7 +294,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
                       contentPadding:
                           EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 0.0, 24.0),
                     ),
@@ -285,6 +315,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                 child: AuthUserStreamWidget(
                   builder: (context) => TextFormField(
                     controller: _model.myphoneController,
+                    focusNode: _model.myphoneFocusNode,
                     textCapitalization: TextCapitalization.words,
                     obscureText: false,
                     decoration: InputDecoration(
@@ -299,7 +330,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       hintStyle:
                           FlutterFlowTheme.of(context).labelMedium.override(
                                 fontFamily: 'Plus Jakarta Sans',
-                                color: Color(0xFF57636C),
+                                color: FlutterFlowTheme.of(context).primaryText,
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -332,7 +363,8 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
                       contentPadding:
                           EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 0.0, 24.0),
                     ),
@@ -352,6 +384,7 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                 child: AuthUserStreamWidget(
                   builder: (context) => TextFormField(
                     controller: _model.myBioController,
+                    focusNode: _model.myBioFocusNode,
                     textCapitalization: TextCapitalization.sentences,
                     obscureText: false,
                     decoration: InputDecoration(
@@ -400,13 +433,14 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor:
+                          FlutterFlowTheme.of(context).secondaryBackground,
                       contentPadding:
                           EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 0.0, 24.0),
                     ),
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Plus Jakarta Sans',
-                          color: Color(0xFF14181B),
+                          color: FlutterFlowTheme.of(context).primaryText,
                           fontSize: 14.0,
                           fontWeight: FontWeight.normal,
                         ),
@@ -424,18 +458,17 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                       EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 0.0),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      if (/* NOT RECOMMENDED */ _model
-                                  .yourNameController.text ==
-                              'true'
-                          ? true
-                          : true) {
+                      if (_model.yourNameController.text != null &&
+                          _model.yourNameController.text != '') {
                         await currentUserReference!
                             .update(createUsersRecordData(
                           displayName: _model.yourNameController.text,
-                          photoUrl: _model.uploadedFileUrl,
+                          photoUrl: FFAppState().image,
                           phoneNumber: _model.myphoneController.text,
                           bio: _model.myBioController.text,
                         ));
+
+                        context.pushNamed('home');
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -452,8 +485,6 @@ class _UpdateProfileWidgetState extends State<UpdateProfileWidget> {
                         );
                         return;
                       }
-
-                      context.pushNamed('home');
                     },
                     text: 'Atualizar',
                     options: FFButtonOptions(

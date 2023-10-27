@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'recuperar_senha_widget.dart' show RecuperarSenhaWidget;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ class RecuperarSenhaModel extends FlutterFlowModel<RecuperarSenhaWidget> {
 
   final unfocusNode = FocusNode();
   // State field(s) for TextFieldEmailRecup widget.
+  FocusNode? textFieldEmailRecupFocusNode;
   TextEditingController? textFieldEmailRecupController;
   String? Function(BuildContext, String?)?
       textFieldEmailRecupControllerValidator;
@@ -23,6 +25,7 @@ class RecuperarSenhaModel extends FlutterFlowModel<RecuperarSenhaWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    textFieldEmailRecupFocusNode?.dispose();
     textFieldEmailRecupController?.dispose();
   }
 

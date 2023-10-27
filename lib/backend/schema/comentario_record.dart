@@ -36,11 +36,17 @@ class ComentarioRecord extends FirestoreRecord {
   DateTime? get createdTime => _createdTime;
   bool hasCreatedTime() => _createdTime != null;
 
+  // "image" field.
+  String? _image;
+  String get image => _image ?? '';
+  bool hasImage() => _image != null;
+
   void _initializeFields() {
     _mensagem = snapshotData['mensagem'] as String?;
     _idPost = snapshotData['id_post'] as DocumentReference?;
     _idUser = snapshotData['id_user'] as DocumentReference?;
     _createdTime = snapshotData['created_time'] as DateTime?;
+    _image = snapshotData['image'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -82,6 +88,7 @@ Map<String, dynamic> createComentarioRecordData({
   DocumentReference? idPost,
   DocumentReference? idUser,
   DateTime? createdTime,
+  String? image,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -89,6 +96,7 @@ Map<String, dynamic> createComentarioRecordData({
       'id_post': idPost,
       'id_user': idUser,
       'created_time': createdTime,
+      'image': image,
     }.withoutNulls,
   );
 
@@ -103,12 +111,13 @@ class ComentarioRecordDocumentEquality implements Equality<ComentarioRecord> {
     return e1?.mensagem == e2?.mensagem &&
         e1?.idPost == e2?.idPost &&
         e1?.idUser == e2?.idUser &&
-        e1?.createdTime == e2?.createdTime;
+        e1?.createdTime == e2?.createdTime &&
+        e1?.image == e2?.image;
   }
 
   @override
   int hash(ComentarioRecord? e) => const ListEquality()
-      .hash([e?.mensagem, e?.idPost, e?.idUser, e?.createdTime]);
+      .hash([e?.mensagem, e?.idPost, e?.idUser, e?.createdTime, e?.image]);
 
   @override
   bool isValidKey(Object? o) => o is ComentarioRecord;
